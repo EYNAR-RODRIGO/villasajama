@@ -1,0 +1,18 @@
+/* Estilo para la barra de navegación en la parte inferior solo para móviles */
+.navbar-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030; /* Asegura que la barra esté encima de otros elementos */
+}
+.tamano-contenedor{
+    margin-top:60px;
+}
+
+/* Mostrar solo en dispositivos móviles */
+@media (min-width: 768px) {
+    .navbar-bottom {
+        display: none;
+    }
+}

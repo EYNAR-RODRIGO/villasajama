@@ -1,0 +1,82 @@
+{% extends 'BaseControl.html' %}
+{% block contenido2 %}
+<div class="container mt-5">
+    <h1 class="text-center">Escáner QR</h1>
+    <div class="text-center mt-3">
+        <button id="btn-start-camera" class="btn btn-primary">Iniciar Escaneo</button>
+    </div>
+    <div id="qr-reader" style="width: 300px; display: none;" class="mt-3 mx-auto"></div>
+    <div id="qr-reader-results" class="mt-3 text-center"></div>
+    <div id="resultado" class="mt-3 text-center"></div> <!-- Área para mostrar el resultado -->
+</div>
+
+<!-- Tarjeta para mostrar la información del estudiante -->
+<div id="card-estudiante" class="card mt-4" style="display: none;">
+    <div class="card-body text-center">
+        <img id="foto-estudiante" src="" alt="Foto Estudiante" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
+        <h5 id="nombre-estudiante" class="card-title"></h5>
+        <p id="carnet-estudiante" class="card-text"></p>
+    </div>
+</div>
+
+<script>
+    // Función para iniciar la cámara automáticamente al cargar la página
+    window.onload = function() {
+        document.getElementById('btn-start-camera').click(); // Simula el clic en el botón
+    };
+
+    document.getElementById('btn-start-camera').addEventListener('click', function() {
+        console.log("Botón presionado, intentando abrir la cámara...");
+
+        document.getElementById('qr-reader').style.display = 'block';
+
+        var html5QrCode = new Html5Qrcode("qr-reader");
+
+        html5QrCode.start(
+            { facingMode: "environment" },
+            {
+                fps: 10,
+                qrbox: { width: 250, height: 250 }
+            },
+            function onScanSuccess(qrCodeMessage) {
+                console.log("Código QR escaneado con éxito:", qrCodeMessage);
+
+                // Realizar la búsqueda del estudiante
+                fetch('{% url "camara" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body: JSON.stringify({ codigo_qr: qrCodeMessage })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Mostrar la tarjeta de estudiante o mensaje de no encontrado
+                    if (data.encontrado) {
+                        document.getElementById('nombre-estudiante').innerText = data.estudiante.NombreEstudiante;
+                        document.getElementById('carnet-estudiante').innerText = "Carnet: " + data.estudiante.Carnet;
+                        document.getElementById('foto-estudiante').src = data.estudiante.Imagen;
+                        document.getElementById('card-estudiante').style.display = 'block';
+                        document.getElementById('qr-reader-results').innerText = ''; // Limpiar resultados anteriores
+                    } else {
+                        document.getElementById('card-estudiante').style.display = 'none';
+                        document.getElementById('qr-reader-results').innerText = "Usuario no encontrado.";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error en la búsqueda del estudiante:", error);
+                    document.getElementById('qr-reader-results').innerText = "Error en la búsqueda.";
+                });
+
+                html5QrCode.stop(); // Detener el escáner después de escanear
+            },
+            function onScanError(errorMessage) {
+                console.error("Error de escaneo:", errorMessage);
+            }
+        ).catch(err => {
+            console.error("Error al iniciar el escáner QR:", err);
+        });
+    });
+</script>
+{% endblock contenido2 %}

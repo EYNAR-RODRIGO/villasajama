@@ -1,0 +1,87 @@
+{% extends 'BaseControl.html' %}
+{% load static %}
+{% block enlase2 %} <link rel="stylesheet" href="{% static 'css/MenuPrincipalControl.css'%}">{% endblock enlase2 %}
+{% block contenido2 %}
+    <div class="container contenedor2">
+        <div class="row  ">
+        <h5>Registrar entrega del Estudiante</h5>
+
+            <!-- Escanear -->
+            <div class="col-6  ">
+                <div class="row   justify-content-center">
+                    <div class="col-12   text-center mb-2">
+                        <i class="bi bi-qr-code-scan" style="font-size: 30px;"></i>
+                    </div>
+                    <div class="col-12   text-center">
+                        <a
+                        name=""
+                        id=""
+                        class="btn btn-primary rounded-5 px-3"
+                        href="{% url 'camara' %}"
+                        role="button"
+                        >Escanear QR</a
+                    >
+                    </div>
+                </div>
+                    
+            </div>
+            <!-- Carnet -->
+            <div class="col-6  ">
+                <div class="row   justify-content-center">
+                    <div class="col-12   text-center mb-2">
+                        <i class="bi bi-input-cursor-text" style="font-size: 30px;"></i>
+                    </div>
+                    <div class="col-12   text-center">
+                        <a
+                        name=""
+                        id=""
+                        class="btn btn-primary rounded-5 px-2 "
+                        href="#"
+                        role="button"
+                        >Ingresar Datos</a
+                    >
+                    </div>
+                </div>
+                    
+            </div>
+            <h5 class="mt-5">Lista Curso</h5>
+            <!-- lista -->
+            <div class="col-6  ">
+                <div class="row   justify-content-center">
+                    <div class="col-12    text-center mb-2">
+                        <i class="bi bi-list-columns text-success" style="font-size: 30px;"></i>
+                    </div>
+                    <div class="col-12   text-center">
+                        <a
+                        name=""
+                        id=""
+                        class="btn btn-primary rounded-5 px-2 "
+                        href="#"
+                        role="button"
+                        >Datos Estudiante</a
+                    >
+                    </div>
+                </div>
+            </div>
+            <!-- lista2 -->
+            <div class="col-6  ">
+                <div class="row   justify-content-center">
+                    <div class="col-12   text-center mb-2">
+                        <i class="bi bi-ui-checks" style="font-size: 30px;"></i>
+                    </div>
+                    <div class="col-12   text-center">
+                        <a
+                        name=""
+                        id=""
+                        class="btn btn-primary rounded-5 px-4 "
+                        href="#"
+                        role="button"
+                        >Asistencia</a
+                    >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock contenido2 %}
